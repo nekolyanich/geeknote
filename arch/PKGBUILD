@@ -1,0 +1,51 @@
+# Maintainer: Nekolyanich <gmail@nekolyanich.com>
+pkgname=python-geeknote
+pkgver=20120712
+pkgrel=1
+pkgdesc="Geeknote - is a command line client for Evernote,
+that can be use on Linux, FreeBSD and OS X."
+arch=('i686' 'x86_64')
+url="http://www.geeknote.me"
+license=('GPL')
+depends=('python2'
+         'python2-sqlalchemy'
+         'python-html2text'
+         'python2-markdown'
+         'thrift')
+makedepends=('git')
+provides=('geeknote')
+conflicts=()
+replaces=()
+backup=()
+options=(!emptydirs)
+source=()
+md5sums=()
+
+#_gitroot="git://github.com/VitaliyRodnenko/geeknote.git"
+_gitroot="git://github.com/d1ffuz0r/geeknote.git"
+_gitname="geeknote"
+
+build () {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [ -d $_gitname ] ; then
+    cd $_gitname && git pull origin
+    msg "The local files are updated."
+  else
+    git clone $_gitroot $_gitname
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting make..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+  sed -i -e 's|env python|env python2|' geeknote/geeknote.py
+  sed -i -e 's|env python|env python2|' geeknote/gnsync.py
+  python2 setup.py install --root="$pkgdir/" --optimize=1
+}
+
+
+# vim:set ts=2 sw=2 et:
