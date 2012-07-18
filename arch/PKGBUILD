@@ -47,5 +47,9 @@ build () {
   python2 setup.py install --root="$pkgdir/" --optimize=1
 }
 
+package() {
+     install -Dm644 ${srcdir}/bash_completion/geeknote  ${pkgdir}/etc/bash_completion.d/geeknote
+
+   }
 
 # vim:set ts=2 sw=2 et:
