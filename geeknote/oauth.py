@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import httplib
+import https
 import time
 import Cookie
 import uuid
@@ -91,7 +92,7 @@ class GeekNoteAuth(object):
         logging.debug("Request URL: %s:/%s > %s # %s", url,
                       uri, unquote(params), headers["Cookie"])
 
-        conn = httplib.HTTPSConnection(url)
+        conn = https.HTTPSConnection(url)
         conn.request(method, uri, params, headers)
         response = conn.getresponse()
         data = response.read()
